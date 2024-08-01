@@ -48,11 +48,9 @@ Route::prefix('products')->controller(ProductListController::class)->group(funct
     
 });
 
-
-
 //end
 
-//admin routs
+//admin routes
 
 Route::group(['prefix' => 'admin', 'middleware' => 'redirectAdmin'], function () {
     Route::get('login', [AdminAuthController::class, 'showLoginForm'])->name('admin.login');

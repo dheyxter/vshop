@@ -7,13 +7,22 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
+use App\Traits\AuthTrait;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use App\Http\Controllers\Admin\AdminAuthController;
+
+use App\Models\User;
+
+
 class AuthenticatedSessionController extends Controller
 {
+    use AuthTrait;
     /**
      * Display the login view.
      */
@@ -30,11 +39,19 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        if ($this->attemptLogin($request)) {
+            $user = Auth::user();
+            if ($user->isAdmin == 1) {
+                return redirect()->action([AdminAuthController::class, 'login'], ['request' => $request]);
+            } else {
+                $request->authenticate();
 
-        $request->session()->regenerate();
+                $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+                return redirect()->intended(RouteServiceProvider::HOME);
+            }
+        }
+         
     }
 
     /**

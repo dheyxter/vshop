@@ -11,6 +11,7 @@ defineProps({
 
 </script>
 <template>
+     <Head :title="$page.component" />
     <UserLayouts>
         <!-- here section  -->
         <Hero></Hero>
