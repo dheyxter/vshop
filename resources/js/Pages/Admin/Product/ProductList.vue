@@ -212,6 +212,7 @@ const deleteProduct = (product, index) => {
 }
 </script>
 <template>
+     <Head :title="$page.component" />
     <section class="  p-3 sm:p-5">
         <!-- dialog for adding product or editing product -->
         <el-dialog v-model="dialogVisible" :title="editMode ? 'Edit product' : 'Add Product'" width="30%"
